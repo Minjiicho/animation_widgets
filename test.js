@@ -83,56 +83,42 @@
   var paging_timer = null;
   /* autoswipe */
   function startAutoSwipeTimer() {
-    // var setAutoSwipe1 = setTimeout(function () {
-    //   $('.item[data-idx=' + 0 + ']').addClass('current');
-    //   $('.paging:eq(' + 0 + ')').delay(1000).addClass('current');
-    //   console.log('init')
-    // }, 100);
-
-    // for (j = 1; j < total_page; j++) {
-    //   (function (j) {
-    //     // 작업 중
-    //     // state : current, passed
-    //     // action : swipe 
-    //     var setAutoSwipe = setTimeout(function (j) {
-    //       var currPaging = $('.paging:eq(' + j + ')');
-    //       currPaging.siblings().removeClass('current passed');
-    //       currPaging.prevAll('.paging').addClass('passed'); // addClass 여러번
-    //       currPaging.removeClass('passed').addClass('current');
-
-    //       $('.list').trigger('swipe_page', j + 1)
-    //       $('.item').removeClass('current');
-    //       $('.item[data-idx=' + j + ']').addClass('current');
-    //     }, 5000 * j);
-    //   })(j);
-    // }
-
-    paging_timer = setInterval(nextPage, 1000);
+    console.log("running startAutoSwipeTimer")
+    paging_timer = setInterval(nextPage, 5000);
   }
 
   
-  function gotoPage(i){$('.list').trigger('swipe_page', i);} // i = 1, 2, 3...
-  var i = 1; // current_page
+  function gotoPage(idx){
+    console.log('running gotoPage: ', idx)
+    $('.list').trigger('swipe_page', idx + 1);
+    applyClass(idx);
+  }
+
+  function applyClass(idx) {
+    var $all_pagings = $('.paging');
+    var $current_paging = $('.paging:eq(' + idx + ')');
+    var $prev_pagings = $current_paging.prevAll('.paging');
+    // var $next_pagings = $current_paging.nextAll('.paging');
+    $all_pagings.removeClass('current passed');
+    $current_paging.addClass('current');
+    $prev_pagings.addClass('passed');
+  }
   
+  var idx = 0; // current_page
   function nextPage() {
-    i = i % total_page + 1; // loop
-    gotoPage(i);
-    // setCurrentPageBars(i);
-    // setPrevPageBars(i);
-    // removeClassPageBars();
+    console.log("running nextPage");
+    idx = ++idx % total_page; // loop
+    gotoPage(idx);
   }
+  gotoPage(idx);
   
-
-  /* 
-  1. 모든 페이지에 대해
-  2. 5초에 한번 페이지를 넘긴다. $('.list').trigger('swipe_page', j + 1)
-  3. 페이지를 넘길 때 (index)
-    1. 현재 페이지만 current 를 갖는다.
-    2. 이전 페이지들만 passed 를 갖는다.
-    3. 이후 페이지는 아무런 class도 없다. 
-  */
   startAutoSwipeTimer();
 
   function stopAutoSwipeTimer() {
     clearTimeout(paging_timer);
   }
+
+  // TODO: 일시정지 한 다음 start 눌렀을 때 nav 바의 파란 막대가 멈춘채로 있다 넘어감.
+  // TODO: 같은 상황에서 파란 nav bar 채워지는 속도가 느려짐.
+  // TODO: 현재 네비게이션 바 클릭시 썸네일 zoom 이 의도대로 안 됨.
+  // TODO: 코드 정리 깔끔하게
