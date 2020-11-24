@@ -30,7 +30,7 @@
       $('.list').trigger('swipe_page', index + 1);
 
       // swipe 그 시점부터 다시 활성화
-      stopAutoSwipe(); // stop이 아니라 해당 위치의 이후 페이지에만 auto되도록...
+      stopAutoSwipeTimer(); // stop이 아니라 해당 위치의 이후 페이지에만 auto되도록...
 
       // 썸네일 zoom 애니메이션
       var pagingIndex = $(this).attr('paging-idx');
@@ -50,30 +50,33 @@
   var pause = '<button class="pause" onclick="onClickPauseButton()">pause</button>';
   $('.pagings').after(pause);
 
+  function fixCurrentPagingBarWidth($curr_paging) {
+    var currPagingBar = $curr_paging.find('.bar');
+    var currPagingBarWidth = currPagingBar.css('width')
+    currPagingBar.css({
+      'width': currPagingBarWidth,
+    });
+  }
+
   /* pause function */
-  function onClickPauseButton() {
-    var pauseButton = $('.pause');;
-
-    if (pauseButton.html() === 'pause') {
-      var currPaging = $('.paging.current');
-      var currPagingIndex = currPaging.attr('paging-idx');
-      var currPagingBar = currPaging.find('.bar');
-      var currPagingBarWidth = currPagingBar.css('width')
-
-      console.log(currPagingIndex)
-
+  var is_playing = true;
+  function onClickPauseButton() { // toggle
+//     1. 버튼 텍스트 바꾸기, 2. progressbar 너비 유지, 다시 autoSwipe 시작.
+    var pauseButton = $('.pause');
+    var $curr_paging = $('.paging.current');
+    
+    // toggle
+    if (is_playing) {  // playing -> pause
+      fixCurrentPagingBarWidth($curr_paging);
       pauseButton.html('start');
-      stopAutoSwipe();
-
-      currPagingBar.css({
-        'width': currPagingBarWidth
-      });
-      currPaging.removeClass('current');
-
-    } else {
+      stopAutoSwipeTimer();
+      $curr_paging.removeClass('current');
+      is_playing = false;
+    } else { // pause -> play
       pauseButton.html('pause');
       autoSwipe();
-      $('.paging:eq(' + currPagingIndex + ')').addClass('current')
+      $curr_paging.addClass('current');
+      is_playing = true;
     }
   }
 
@@ -102,7 +105,7 @@
   }
   autoSwipe();
 
-  function stopAutoSwipe() {
+  function stopAutoSwipeTimer() {
     clearTimeout(setAutoSwipe1);
     clearTimeout(setAutoSwipe);
   }
