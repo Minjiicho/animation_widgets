@@ -16,7 +16,7 @@
   $('.pages').after(pagings);
 
   var paging = '';
-  var total_page = 3; //set total pages
+  var total_page = $('.page-position').length; //set total pages
   for (var i = 0; i < total_page; i++) {
     paging += '<span class="paging" paging-idx= "' + i + '"><i class="bar"></i></span>';
   }
@@ -30,7 +30,7 @@
       $('.list').trigger('swipe_page', index + 1);
 
       // swipe 그 시점부터 다시 활성화
-      stopAutoSwipeTimer(); // stop이 아니라 해당 위치의 이후 페이지에만 auto되도록...
+      // stopAutoSwipeTimer(); // stop이 아니라 해당 위치의 이후 페이지에만 auto되도록...
 
       // 썸네일 zoom 애니메이션
       var pagingIndex = $(this).attr('paging-idx');
@@ -74,38 +74,65 @@
       is_playing = false;
     } else { // pause -> play
       pauseButton.html('pause');
-      autoSwipe();
+      startAutoSwipeTimer();
       $curr_paging.addClass('current');
       is_playing = true;
     }
   }
 
+  var paging_timer = null;
   /* autoswipe */
-  function autoSwipe() {
-    setAutoSwipe1 = setTimeout(function () {
-      $('.item[data-idx=' + 0 + ']').addClass('current');
-      $('.paging:eq(' + 0 + ')').delay(1000).addClass('current');
-      console.log('init')
-    }, 100);
+  function startAutoSwipeTimer() {
+    // var setAutoSwipe1 = setTimeout(function () {
+    //   $('.item[data-idx=' + 0 + ']').addClass('current');
+    //   $('.paging:eq(' + 0 + ')').delay(1000).addClass('current');
+    //   console.log('init')
+    // }, 100);
 
-    for (j = 1; j < total_page; j++) {
-      (function (j) {
-        setAutoSwipe = setTimeout(function (j) {
-          var currPaging = $('.paging:eq(' + j + ')');
-          currPaging.siblings().removeClass('current passed');
-          currPaging.prevAll('.paging').addClass('passed');
-          currPaging.removeClass('passed').addClass('current');
+    // for (j = 1; j < total_page; j++) {
+    //   (function (j) {
+    //     // 작업 중
+    //     // state : current, passed
+    //     // action : swipe 
+    //     var setAutoSwipe = setTimeout(function (j) {
+    //       var currPaging = $('.paging:eq(' + j + ')');
+    //       currPaging.siblings().removeClass('current passed');
+    //       currPaging.prevAll('.paging').addClass('passed'); // addClass 여러번
+    //       currPaging.removeClass('passed').addClass('current');
 
-          $('.list').trigger('swipe_page', j + 1)
-          $('.item').removeClass('current');
-          $('.item[data-idx=' + j + ']').addClass('current');
-        }, 5000 * j);
-      })(j);
-    }
+    //       $('.list').trigger('swipe_page', j + 1)
+    //       $('.item').removeClass('current');
+    //       $('.item[data-idx=' + j + ']').addClass('current');
+    //     }, 5000 * j);
+    //   })(j);
+    // }
+
+    paging_timer = setInterval(nextPage, 1000);
   }
-  autoSwipe();
+
+  
+  function gotoPage(i){$('.list').trigger('swipe_page', i);} // i = 1, 2, 3...
+  var i = 1; // current_page
+  
+  function nextPage() {
+    i = i % total_page + 1; // loop
+    gotoPage(i);
+    // setCurrentPageBars(i);
+    // setPrevPageBars(i);
+    // removeClassPageBars();
+  }
+  
+
+  /* 
+  1. 모든 페이지에 대해
+  2. 5초에 한번 페이지를 넘긴다. $('.list').trigger('swipe_page', j + 1)
+  3. 페이지를 넘길 때 (index)
+    1. 현재 페이지만 current 를 갖는다.
+    2. 이전 페이지들만 passed 를 갖는다.
+    3. 이후 페이지는 아무런 class도 없다. 
+  */
+  startAutoSwipeTimer();
 
   function stopAutoSwipeTimer() {
-    clearTimeout(setAutoSwipe1);
-    clearTimeout(setAutoSwipe);
+    clearTimeout(paging_timer);
   }
