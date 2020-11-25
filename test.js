@@ -47,6 +47,8 @@
   });
 
   /* pause view */
+  var idx = 0; // current_page
+
   var pause = '<button class="pause" onclick="onClickPauseButton()">pause</button>';
   $('.pagings').after(pause);
 
@@ -57,13 +59,19 @@
       'width': currPagingBarWidth,
     });
   }
+  function resetPagingBarWidth($curr_paging){
+    var currPagingBar = $curr_paging.find('.bar');
+    currPagingBar.css({
+      'width': 0,
+    });
+  };
 
   /* pause function */
   var is_playing = true;
   function onClickPauseButton() { // toggle
 //     1. 버튼 텍스트 바꾸기, 2. progressbar 너비 유지, 다시 autoSwipe 시작.
     var pauseButton = $('.pause');
-    var $curr_paging = $('.paging.current');
+    var $curr_paging = $('.paging:eq(' + idx + ')');
     
     // toggle
     if (is_playing) {  // playing -> pause
@@ -104,7 +112,6 @@
     $prev_pagings.addClass('passed');
   }
   
-  var idx = 0; // current_page
   function nextPage() {
     console.log("running nextPage");
     idx = ++idx % total_page; // loop
@@ -118,7 +125,14 @@
     clearTimeout(paging_timer);
   }
 
-  // TODO: 일시정지 한 다음 start 눌렀을 때 nav 바의 파란 막대가 멈춘채로 있다 넘어감.
-  // TODO: 같은 상황에서 파란 nav bar 채워지는 속도가 느려짐.
+
   // TODO: 현재 네비게이션 바 클릭시 썸네일 zoom 이 의도대로 안 됨.
+    // pause 상태에서 페이지 바를 누르면 버튼은 start 인 채로 파란 bar 는 차오르는데 bar 가 가득차도 다음 페이지로 넘어가진 않음.
+    // 위 경우에 대한 시나리오 정리 필요.
   // TODO: 코드 정리 깔끔하게
+
+  //start 할 때도 현재 bar 를 잘 찾아와서 current class를 붙인다.
+  // idx 변수에 든 숫자를 쓴다.
+  // 1. idx 변수를 위로 올린다.
+  // 2. current index 만 공유하냐 아니면 current idx 요소를 공유하냐 -> 일단 idx 만 공유하고 나머지는 추가 작업으로 남겨둠.
+  // 
