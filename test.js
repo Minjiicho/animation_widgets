@@ -97,10 +97,11 @@
     console.log('running gotoPage: ', idx)
     $('.list').trigger('swipe_page', idx + 1);
     $('.paging .bar').removeAttr('style');
-    applyClass(idx);
+    applyPagingClass(idx);
+    applyItemClass(idx);
   }
 
-  function applyClass(idx) {
+  function applyPagingClass(idx) {
     var $all_pagings = $('.paging');
     var $current_paging = $('.paging:eq(' + idx + ')');
     var $prev_pagings = $current_paging.prevAll('.paging');
@@ -108,6 +109,13 @@
     $all_pagings.removeClass('current passed');
     $current_paging.addClass('current');
     $prev_pagings.addClass('passed');
+  }
+
+  function applyItemClass(idx) {
+    var $all_items = $('.item');
+    var $current_item = $('.item' + idx);
+    $all_items.removeClass('current');
+    $current_item.addClass('current');
   }
   
   function nextPage() {
@@ -123,7 +131,7 @@
     clearTimeout(paging_timer);
   }
 
-  
+  // TODO: 페이지 바 클릭으로 이동시 setInterval과 꼬임. 다시 실행.
   // TODO: 현재 네비게이션 바 클릭시 썸네일 zoom 이 의도대로 안 됨.
     // pause 상태에서 페이지 바를 누르면 버튼은 start 인 채로 파란 bar 는 차오르는데 bar 가 가득차도 다음 페이지로 넘어가진 않음.
     // 위 경우에 대한 시나리오 정리 필요.
