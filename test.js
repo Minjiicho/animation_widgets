@@ -2,7 +2,7 @@
   var names = document.getElementsByClassName('name');
   for (var i = 0; i < names.length; i++) {
     var text = names[i].innerText;
-    names[i].innerHTML = '<div class="name-inner">' + text + '</div>';
+    names[i].innerHTML = '<div class="name__bg"><span class="name__text">' + text + '</span></div>';
   }
 
   $(window).on('load resize onload_responsive_group', function () {
