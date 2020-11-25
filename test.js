@@ -61,9 +61,6 @@
   }
   function resetPagingBarWidth($curr_paging){
     var currPagingBar = $curr_paging.find('.bar');
-    currPagingBar.css({
-      'width': 0,
-    });
   };
 
   /* pause function */
@@ -99,6 +96,7 @@
   function gotoPage(idx){
     console.log('running gotoPage: ', idx)
     $('.list').trigger('swipe_page', idx + 1);
+    $('.paging .bar').removeAttr('style');
     applyClass(idx);
   }
 
@@ -125,7 +123,7 @@
     clearTimeout(paging_timer);
   }
 
-
+  
   // TODO: 현재 네비게이션 바 클릭시 썸네일 zoom 이 의도대로 안 됨.
     // pause 상태에서 페이지 바를 누르면 버튼은 start 인 채로 파란 bar 는 차오르는데 bar 가 가득차도 다음 페이지로 넘어가진 않음.
     // 위 경우에 대한 시나리오 정리 필요.
