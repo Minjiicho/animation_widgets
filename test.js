@@ -43,9 +43,10 @@
   
   function fixCurrThumbnailScale($curr_item) {
     var curr_thumbnail = $curr_item.find('.thumbnail');
-    var curr_thumbnail_scale = curr_thumbnail.css('transform');
+    var curr_thumbnail_trans = curr_thumbnail.css('transform');
+    var curr_thumbnail_scale = curr_thumbnail_trans.split('(')[1].split(')')[0].split(',')[0]
     curr_thumbnail.css({
-      'transform': curr_thumbnail_scale,
+      'transform': 'scale('+ curr_thumbnail_scale +')'
     });
   }
   function fixCurrPagingBarWidth($curr_paging) {
@@ -64,7 +65,7 @@
       fixCurrPagingBarWidth($curr_paging);
       $pause_button.html('start');
       stopAutoSwipeTimer();
-      $curr_item.removeClass('current'); // scale이 멈추긴 하는데 다시 실행이 안됨
+      $curr_item.removeClass('current');
       $curr_paging.removeClass('current');
       is_playing = false;
     } else { // pause -> play
@@ -104,6 +105,7 @@
   function gotoPage(curr_idx){
     $('.list').trigger('swipe_page', curr_idx + 1);
     $('.paging .bar').removeAttr('style');
+    $('.thumbnail').removeAttr('style');
     console.log('running gotoPage: ', curr_idx)
     applyItemClass(curr_idx);
     applyPagingClass(curr_idx);
@@ -117,7 +119,6 @@
   gotoPage(curr_idx);
   startAutoSwipeTimer();
 
-  // TODO: pause에서 resume하면 섬네일 zoom이 다시 동작하지 않음
   // TODO: pause 누르면 current 클래스가 사라지면서 텍스트도 사라짐. 텍스트 유지하는 방법 고민
   // TODO: pause 눌렀다가 다시 실행하면, transition이 남은 시간이 아닌 최초값 기준 5초동안 실행됨. -> javascript로 실행해야 하나? 아니면 남은 초도 함께 저장하는 방법?
   // TODO: 코드 정리 깔끔하게
