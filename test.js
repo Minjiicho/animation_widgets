@@ -93,10 +93,17 @@
     $curr_item.addClass('current');
   }
 
+  function applyNameClass(curr_idx) {
+    var $all_items_name = $('.item .name');
+    var $curr_item_name = $('.item' + curr_idx).find('.name');
+    $all_items_name.removeClass('current');
+    $curr_item_name.addClass('current');
+  }
+
   var paging_timer = null;
   /* autoswipe */
   function startAutoSwipeTimer() {
-    paging_timer = setInterval(nextPage, 3000);
+    paging_timer = setInterval(nextPage, 5000);
   }
   function stopAutoSwipeTimer() {
     clearTimeout(paging_timer);
@@ -106,21 +113,21 @@
     $('.list').trigger('swipe_page', curr_idx + 1);
     $('.paging .bar').removeAttr('style');
     $('.thumbnail').removeAttr('style');
-    console.log('running gotoPage: ', curr_idx)
     applyItemClass(curr_idx);
+    applyNameClass(curr_idx);
     applyPagingClass(curr_idx);
   }
   
   function nextPage() {
     curr_idx = ++curr_idx % total_page; // loop
-    console.log("running nextPage", curr_idx);
     gotoPage(curr_idx);
   }
   gotoPage(curr_idx);
   startAutoSwipeTimer();
 
-  // TODO: pause 누르면 current 클래스가 사라지면서 텍스트도 사라짐. 텍스트 유지하는 방법 고민
+  // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐.
   // TODO: pause 눌렀다가 다시 실행하면, transition이 남은 시간이 아닌 최초값 기준 5초동안 실행됨. -> javascript로 실행해야 하나? 아니면 남은 초도 함께 저장하는 방법?
+  // TODO: 잊고있던 좌우 arrow 추가, trigger 기능
   // TODO: 코드 정리 깔끔하게
 
   //start 할 때도 현재 bar 를 잘 찾아와서 current class를 붙인다.

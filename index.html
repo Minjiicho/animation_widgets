@@ -80,10 +80,10 @@
 
     .widget--h .thumbnail {
       transform: scale(1.1);
+      transition: transform 5s linear;
     }
     .widget--h .item.current .thumbnail {
       transform: scale(1) !important;
-      transition: transform 5s linear;
     }
 
     .widget--h .name {
@@ -116,20 +116,20 @@
       height: 0;
       z-index: 1;
       background: #1e7ebb;
-      transition: .3s ease-in
+      transition: height .3s ease-in;
     }
 
-    .widget--h .current .name:before {
+    .widget--h .name.current:before {
       height: 100%
     }
 
     .widget--h .name__bg{
       right:100%;
+      transition: right .6s ease-in-out 0.3s;
     }
-    .widget--h .current .name__bg{
+    .widget--h .name.current .name__bg{
       display:inline-block;
       background:#ededed;
-      transition: right .6s ease-in-out 0.3s;
       position:relative;
       right: 0;
       padding:5px 20px;
@@ -138,9 +138,11 @@
     .widget--h .name__text {
       font-weight: 700;
       opacity: 0;
-    }
-    .widget--h .current .name__text {
+      position:relative;
+      left: -8px;
       transition: opacity .6s ease-in-out 1s, left .6s ease-in-out 1s;
+    }
+    .widget--h .name.current .name__text {
       left: 0;
       opacity: 1;
     }
@@ -233,12 +235,12 @@
       top: 0;
       bottom: 0;
       background: #2e9ee8;
-      transition: none
+      transition: none;
     }
 
     .paging.current .bar {
       width: 100% !important;
-      transition: 5s linear
+      transition: width 5s linear;
     }
   </style>
 </head>
