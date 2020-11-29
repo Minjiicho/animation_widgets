@@ -22,8 +22,8 @@
   }
   $('.pagings').append(paging_el);
   
-  var pause_el = '<button class="pause" onclick="onClickPauseButton()">pause</button>'; 
-  $('.pagings').after(pause_el);
+  var pause_el = '<button class="pause" onclick="onClickPauseButton()"></button>'; 
+  $('.pages').after(pause_el);
 
 
   /* function */
@@ -39,10 +39,36 @@
     gotoPage(curr_idx)
     stopAutoSwipeTimer();
     
-    $pause_button.html('pause');
+    $pause_button.removeClass('paused');
     startAutoSwipeTimer();
     is_playing = true;
   });
+  
+  // $('.prev').on('click', function () {
+  //   if (curr_idx === 0){
+  //     curr_idx = total_page - 1;
+  //   } else {
+  //     curr_idx --;
+  //   }
+  //   init_time = 5;
+  //   gotoPage(curr_idx);
+  //   stopAutoSwipeTimer();
+  //   startAutoSwipeTimer();
+  //   updateTransitionDuration($curr_paging);
+  // });
+  // $('.next').on('click', function () {
+  //   if (curr_idx === total_page - 1){
+  //     curr_idx = 0;
+  //   } else {
+  //     curr_idx ++;
+  //   }
+  //   init_time = 5;
+  //   console.log('next', curr_idx);
+  //   gotoPage(curr_idx);
+  //   stopAutoSwipeTimer();
+  //   startAutoSwipeTimer();
+  //   updateTransitionDuration($curr_paging);
+  // });
   
   function setDurationTimer() {
     duration_timer = setInterval(function(){
@@ -88,7 +114,7 @@
     if (is_playing) {  // playing -> pause      
       fixCurrThumbnailScale($curr_item);
       fixCurrPagingBarWidth($curr_paging);
-      $pause_button.html('start');
+      $pause_button.addClass('paused');
       $curr_item.removeClass('current');
       $curr_paging.removeClass('current');
       is_playing = false;
@@ -96,7 +122,7 @@
       pauseDurationTimer();
     } else { // pause -> play
       updateTransitionDuration($curr_paging);
-      $pause_button.html('pause');
+      $pause_button.removeClass('paused');
       $curr_item.addClass('current');
       $curr_paging.addClass('current');
       is_playing = true;
@@ -132,7 +158,8 @@
 
   /* autoswipe */
   function startAutoSwipeTimer() {
-    paging_timer = setInterval(nextPage, 5000);
+    paging_timer = setInterval(nextPage, init_time * 1000);
+    console.log('startAutoSwipe', init_time)
   }
   function stopAutoSwipeTimer() {
     clearTimeout(paging_timer);
@@ -140,6 +167,7 @@
   
   function gotoPage(curr_idx){
     init_time = 5;
+    console.log('gotoPage', init_time)
     $('.list').trigger('swipe_page', curr_idx + 1);
     $('.paging .bar').removeAttr('style');
     $('.thumbnail').removeAttr('style');
@@ -158,7 +186,7 @@
   setDurationTimer();
 
   // TODO: restart하면 해당 페이지의 autoSwipe가 5초로 고정돼 멈춤, init_time으로 변경하면 다음 페이지들에서 오류 발생
-  // TODO: 잊고있던 좌우 arrow 추가, trigger 기능
+  // TODO: 좌우 arrow trigger 기능
   // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
   // TODO: 코드 정리 깔끔하게
 
