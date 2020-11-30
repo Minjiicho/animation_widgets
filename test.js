@@ -22,24 +22,39 @@
 
   /* function */
   var curr_idx = 0; // current_page_index
-  var duration_time = 5; // sec
+  var init_duration_time = 5; // init
+  var duration_time = init_duration_time; // sec
   var count_duration = null;
   var is_playing = true;
   var $pause_button = $('.pause');
 
   function resetSwipeOption(curr_idx){
-    duration_time = 5;
     gotoPage(curr_idx);
-    stopAutoSwipeTimer();    
+    stopAutoSwipeTimer();
     $pause_button.removeClass('paused');
-    startAutoSwipeTimer();
+    startAutoSwipeTimer(init_duration_time);
     is_playing = true;
   }
 
   $('.paging').on('click', function () {
     var curr_paging_idx = $(this).index();
-    curr_idx = curr_paging_idx;
-    resetSwipeOption(curr_idx)
+    var $curr_item = $('.item:eq(' + curr_paging_idx + ')');
+    var $curr_paging = $('.paging:eq(' + curr_paging_idx + ')');
+
+    if(curr_idx !== curr_paging_idx){
+        curr_idx = curr_paging_idx;
+        resetSwipeOption(curr_idx)
+    }else{
+      if(!is_playing){
+        updateDurationTime($(this));
+        $pause_button.removeClass('paused');
+        $curr_item.addClass('current');
+        $curr_paging.addClass('current');
+        is_playing = true;
+        startAutoSwipeTimer(duration_time);
+        countDurationTime();
+      }
+    }
   });
   
   $('.prev').on('click', function () {
@@ -114,7 +129,7 @@
       $curr_item.addClass('current');
       $curr_paging.addClass('current');
       is_playing = true;
-      startAutoSwipeTimer();
+      startAutoSwipeTimer(duration_time);
       countDurationTime();
     }
   }
@@ -145,7 +160,7 @@
   var swipe_timer = null;
 
   /* autoswipe */
-  function startAutoSwipeTimer() {
+  function startAutoSwipeTimer(duration_time) {
     swipe_timer = setTimeout(nextPage, duration_time * 1000);
   }
   function stopAutoSwipeTimer() {
@@ -153,7 +168,7 @@
   }
   
   function gotoPage(curr_idx){
-    duration_time = 5;
+    duration_time = init_duration_time;
     $('.list').trigger('swipe_page', curr_idx + 1);
     $('.paging .bar').removeAttr('style');
     $('.thumbnail').removeAttr('style');
@@ -169,9 +184,11 @@
   }
 
   gotoPage(curr_idx);
-  startAutoSwipeTimer();
+  startAutoSwipeTimer(duration_time);
   countDurationTime();
-  
+
+  // TODO: paging을 클릭하거나, 좌우 화살표로 이동했을 때, scale이 제대로 작동하지 않음
+  // TODO: transition_duration이 초 단위로 적용되니 정교하지 않음 -> 1초 내외로 남았을 때 pause/resume하면 바로 다음 페이지로 이동해버리는 이슈
   // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
   // TODO: 코드 정리 깔끔하게
 
