@@ -28,13 +28,13 @@
 
   /* function */
   var curr_idx = 0; // current_page_index
-  var init_time = 5; // sec
-  var set_duration = null;
+  var duration_time = 5; // sec
+  var count_duration = null;
   var is_playing = true;
   var $pause_button = $('.pause');
 
   function resetSwipeOption(curr_idx){
-    init_time = 5;
+    duration_time = 5;
     gotoPage(curr_idx)
     stopAutoSwipeTimer();    
     $pause_button.removeClass('paused');
@@ -65,18 +65,27 @@
     resetSwipeOption(curr_idx)
   });
   
-  function setDurationTimer() {
-    duration_timer = setInterval(function(){
-      init_time --;
-      if(init_time === 0){
-        init_time = 5;
-      }
-    }, 1000);
+  function countDown(){
+    duration_time --;
+    count_duration = setTimeout(countDown, 1000);
   }
-  function pauseDurationTimer() {
-    clearInterval(duration_timer);
+  function countDurationTime() {
+    count_duration = setTimeout(countDown, 1000);
+  }
+  function pauseDurationTime() {
+    clearTimeout(count_duration);
   }
 
+  function updateDurationTime($curr_paging) {
+    var $all_thumbnail = $('.item .thumbnail');
+    var $curr_paging_bar = $curr_paging.find('.bar');
+    $all_thumbnail.css({
+      'transition-duration': duration_time + 's',
+    });
+    $curr_paging_bar.css({
+      'transition-duration': duration_time + 's',
+    });
+  }
   function fixCurrThumbnailScale($curr_item) {
     var $curr_thumbnail = $curr_item.find('.thumbnail');
     var curr_thumbnail_trans = $curr_thumbnail.css('transform');
@@ -92,16 +101,6 @@
       'width': curr_paging_bar_width,
     });
   }
-  function updateTransitionDuration($curr_paging) {
-    var $all_thumbnail = $('.item .thumbnail');
-    var $curr_paging_bar = $curr_paging.find('.bar');
-    $all_thumbnail.css({
-      'transition-duration': init_time + 's',
-    });
-    $curr_paging_bar.css({
-      'transition-duration': init_time + 's',
-    });
-  }
 
   function onClickPauseButton() { // toggle
     var $curr_item = $('.item:eq(' + curr_idx + ')');
@@ -114,15 +113,15 @@
       $curr_paging.removeClass('current');
       is_playing = false;
       stopAutoSwipeTimer();
-      pauseDurationTimer();
+      pauseDurationTime();
     } else { // pause -> play
-      updateTransitionDuration($curr_paging);
+      updateDurationTime($curr_paging);
       $pause_button.removeClass('paused');
       $curr_item.addClass('current');
       $curr_paging.addClass('current');
       is_playing = true;
       startAutoSwipeTimer();
-      setDurationTimer();
+      countDurationTime();
     }
   }
 
@@ -149,20 +148,18 @@
     $curr_item_name.addClass('current');
   }
 
-  var paging_timer = null;
+  var swipe_timer = null;
 
   /* autoswipe */
   function startAutoSwipeTimer() {
-    paging_timer = setInterval(nextPage, init_time * 1000);
-    console.log('startAutoSwipe', init_time)
+    swipe_timer = setTimeout(nextPage, duration_time * 1000);
   }
   function stopAutoSwipeTimer() {
-    clearTimeout(paging_timer);
+    clearTimeout(swipe_timer);
   }
   
   function gotoPage(curr_idx){
-    init_time = 5;
-    console.log('gotoPage', init_time)
+    duration_time = 5;
     $('.list').trigger('swipe_page', curr_idx + 1);
     $('.paging .bar').removeAttr('style');
     $('.thumbnail').removeAttr('style');
@@ -174,13 +171,13 @@
   function nextPage() {
     curr_idx = ++curr_idx % total_page; // loop
     gotoPage(curr_idx);
+    swipe_timer = setTimeout(nextPage, duration_time * 1000);
   }
 
   gotoPage(curr_idx);
   startAutoSwipeTimer();
-  setDurationTimer();
-
-  // TODO: restart하면 해당 페이지의 autoSwipe가 5초로 고정돼 멈춤, init_time으로 변경하면 다음 페이지들에서 오류 발생
+  countDurationTime();
+  
   // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
   // TODO: 코드 정리 깔끔하게
 
