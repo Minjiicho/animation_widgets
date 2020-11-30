@@ -1,17 +1,11 @@
+  /* view */
   /* wrap name */
   var names = document.getElementsByClassName('name');
   for (var i = 0; i < names.length; i++) {
     var text = names[i].innerText;
     names[i].innerHTML = '<div class="name__bg"><span class="name__text">' + text + '</span></div>';
   }
-
-  $(window).on('load resize onload_responsive_group', function () {
-    $(".item").each(function () {
-      $(this).find(".category").appendTo($(this).find(".thumbnail-wrap"));
-    });
-  });
-
-  /* view */
+  
   var pagings_el = '<div class="pagings"></div>';
   var paging_el = '';
   var total_page = $('.page-position').length;
@@ -35,7 +29,7 @@
 
   function resetSwipeOption(curr_idx){
     duration_time = 5;
-    gotoPage(curr_idx)
+    gotoPage(curr_idx);
     stopAutoSwipeTimer();    
     $pause_button.removeClass('paused');
     startAutoSwipeTimer();
