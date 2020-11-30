@@ -153,7 +153,6 @@
 
   /* autoswipe */
   function startAutoSwipeTimer() {
-    if
     paging_timer = setInterval(nextPage, init_time * 1000);
     console.log('startAutoSwipe', init_time)
   }
