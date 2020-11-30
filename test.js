@@ -33,42 +33,37 @@
   var is_playing = true;
   var $pause_button = $('.pause');
 
-  $('.paging').on('click', function () {
-    var curr_paging_idx = $(this).index();
-    curr_idx = curr_paging_idx;
+  function resetSwipeOption(curr_idx){
+    init_time = 5;
     gotoPage(curr_idx)
-    stopAutoSwipeTimer();
-    
+    stopAutoSwipeTimer();    
     $pause_button.removeClass('paused');
     startAutoSwipeTimer();
     is_playing = true;
+  }
+
+  $('.paging').on('click', function () {
+    var curr_paging_idx = $(this).index();
+    curr_idx = curr_paging_idx;
+    resetSwipeOption(curr_idx)
   });
   
-  // $('.prev').on('click', function () {
-  //   if (curr_idx === 0){
-  //     curr_idx = total_page - 1;
-  //   } else {
-  //     curr_idx --;
-  //   }
-  //   init_time = 5;
-  //   gotoPage(curr_idx);
-  //   stopAutoSwipeTimer();
-  //   startAutoSwipeTimer();
-  //   updateTransitionDuration($curr_paging);
-  // });
-  // $('.next').on('click', function () {
-  //   if (curr_idx === total_page - 1){
-  //     curr_idx = 0;
-  //   } else {
-  //     curr_idx ++;
-  //   }
-  //   init_time = 5;
-  //   console.log('next', curr_idx);
-  //   gotoPage(curr_idx);
-  //   stopAutoSwipeTimer();
-  //   startAutoSwipeTimer();
-  //   updateTransitionDuration($curr_paging);
-  // });
+  $('.prev').on('click', function () {
+    if (curr_idx === 0){
+      curr_idx = total_page - 1;
+    } else {
+      curr_idx --;
+    }
+    resetSwipeOption(curr_idx)
+  });
+  $('.next').on('click', function () {
+    if (curr_idx === total_page - 1){
+      curr_idx = 0;
+    } else {
+      curr_idx ++;
+    }
+    resetSwipeOption(curr_idx)
+  });
   
   function setDurationTimer() {
     duration_timer = setInterval(function(){
@@ -158,6 +153,7 @@
 
   /* autoswipe */
   function startAutoSwipeTimer() {
+    if
     paging_timer = setInterval(nextPage, init_time * 1000);
     console.log('startAutoSwipe', init_time)
   }
@@ -186,7 +182,6 @@
   setDurationTimer();
 
   // TODO: restart하면 해당 페이지의 autoSwipe가 5초로 고정돼 멈춤, init_time으로 변경하면 다음 페이지들에서 오류 발생
-  // TODO: 좌우 arrow trigger 기능
   // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
   // TODO: 코드 정리 깔끔하게
 
