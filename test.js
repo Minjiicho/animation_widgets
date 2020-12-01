@@ -1,24 +1,35 @@
-  /* view */
-  /* wrap name */
+
+/* 슬라이드 효과의 재생 시간을 설정해주세요 */
+/* 단위는 'second' 입니다 */
+var init_duration_time = 5; // 5초
+
+/* view */
+  
+  /* name */
   var names = document.getElementsByClassName('name');
   for (var i = 0; i < names.length; i++) {
     var text = names[i].innerText;
     names[i].innerHTML = '<div class="name__bg"><span class="name__text">' + text + '</span></div>';
   }
   
+  /* paging */
   var pagings_el = '<div class="pagings"></div>';
   var paging_el = '';
   var total_page = $('.page-position').length;
-
   $('.pages').after(pagings_el);
   for (var i = 0; i < total_page; i++) {
     paging_el += '<span class="paging" paging-idx= "' + i + '"><i class="bar"></i></span>';
   }
   $('.pagings').append(paging_el);
-  
-  var pause_el = '<button class="pause" onclick="onClickPauseButton()"></button>'; 
-  $('.pages').after(pause_el);
 
+  /* prev & next & pause */
+  var prev_el = '<span class="btn__prev"><span class="prev-icon"></span></span>'
+  var next_el = '<span class="btn__next"><span class="next-icon"></span></span>'
+  var pause_el = '<button class="btn__pause" onclick="onClickPauseButton()"></button>'; 
+
+  $('.pages').after(prev_el, pause_el, next_el);
+
+  /* read more button */
   $('.item-link').each(function(){
     var item_url = $(this).attr('href');
     var read_more_btn_el = '<a class="btn__more" href="'+ item_url +'" target="_blank">READ MORE</a>';
@@ -28,7 +39,6 @@
 
   /* function */
   var curr_idx = 0; // current_page_index
-  var init_duration_time = 5; // init
   var duration_time = init_duration_time; // sec
   var count_duration = null;
   var is_playing = true;
@@ -63,7 +73,7 @@
     }
   });
   
-  $('.prev').on('click', function () {
+  $('.btn__prev').on('click', function () {
     if (curr_idx === 0){
       curr_idx = total_page - 1;
     } else {
@@ -71,7 +81,7 @@
     }
     resetSwipeOption(curr_idx)
   });
-  $('.next').on('click', function () {
+  $('.btn__next').on('click', function () {
     if (curr_idx === total_page - 1){
       curr_idx = 0;
     } else {

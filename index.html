@@ -75,7 +75,7 @@
     }
 
     .widget--h .item {
-      padding: 0 0 20px;
+      padding: 0 0 50px;
       position:relative
     }
 
@@ -98,7 +98,7 @@
     }
 
     .widget--h .name {
-      position: relative;
+      position: absolute;
       width:92%;
       left: 4%;
       z-index: 2;
@@ -161,87 +161,6 @@
       opacity: 1;
     }
 
-
-    .btn__more {
-      display: block;
-      position: absolute;
-      right: 10px;
-      top:54%;
-      background: #1e7ebb;
-      font-size: 16px;
-      text-align: center;
-      color: #fff;
-      padding: 8px 20px;
-      border: 3px solid #1e7ebb;
-      border-radius: 24px;
-      transition: .2s
-    }
-
-    .btn__more:hover {
-      text-decoration: none;
-      border-color: #fff
-    }
-
-    .page-positions {
-      display: none
-    }
-
-    .widget--h .pages{
-      margin:0
-    }
-    .widget .next,
-    .widget .prev {
-      position: absolute;
-      top:64% !important;
-      margin:0;
-      padding:0;
-      background: none;
-      border: none;
-      width:auto;
-      height:auto;
-    }
-
-    .widget .prev {
-      left: 20px
-    }
-
-    .widget .next {
-      left: 105px
-    }
-    .widget .prev-btn, .widget .next-btn{
-      width: 0;
-      height: 0;
-      border-style: solid;
-      transform:none;
-      padding:0;
-      position:relative;
-    }
-    .widget .prev-btn{
-      border-width: 12px 20px 12px 0;
-      border-color: transparent rgba(255,255,255,.9) transparent transparent;
-      padding-left:5px;
-    }
-    .widget .next-btn{
-      border-width: 12px 0 12px 20px;
-      border-color: transparent transparent transparent rgba(255,255,255,.9);
-      padding-right:5px;
-    }
-    .widget .prev-btn:before, .widget .next-btn:before{
-      display:inline-block;
-      content:'';
-      width:5px;
-      height:24px;
-      background-color:rgba(255,255,255,.9);
-      position: absolute;
-      top: -12px;
-    }
-    .widget .prev-btn:before{
-      left: 0;
-    }
-    .widget .next-btn:before{
-      right: 0;
-    }
-
     .powered-by {
       top: 18px
     }
@@ -292,20 +211,100 @@
       transition: width 5s linear;
     }
 
-    button.pause{
+    .btn__more {
+      display: block;
+      position: absolute;
+      right: 10px;
+      bottom: 100px;
+      background: #1e7ebb;
+      font-size: 16px;
+      text-align: center;
+      color: #fff;
+      padding: 8px 20px;
+      border: 3px solid #1e7ebb;
+      border-radius: 24px;
+      transition: .2s
+    }
+
+    .btn__more:hover {
+      text-decoration: none;
+      border-color: #fff
+    }
+    .btn__more:visited{
+      color:#fff
+    }
+
+    .widget--h .pages{
+      display:none;
+    }
+
+    .btn__next,
+    .btn__prev {
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      position: absolute;
+      bottom:100px;
+      margin:0;
+      padding:0;
+      width:auto;
+      height:auto;
+    }
+
+    .btn__prev {
+      left: 20px
+    }
+    .btn__next {
+      left: 105px
+    }
+    .prev-icon, .next-icon{
+      display:inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      position:relative;
+    }
+    .prev-icon{
+      border-width: 12px 20px 12px 0;
+      border-color: transparent rgba(255,255,255,.9) transparent transparent;
+      padding-left:5px;
+    }
+    .next-icon{
+      border-width: 12px 0 12px 20px;
+      border-color: transparent transparent transparent rgba(255,255,255,.9);
+      padding-right:5px;
+    }
+    .prev-icon:before, .next-icon:before{
+      display:inline-block;
+      content:'';
+      width:5px;
+      height:24px;
+      background-color:rgba(255,255,255,.9);
+      position: absolute;
+      top: -12px;
+    }
+    .prev-icon:before{
+      left: 0;
+    }
+    .next-icon:before{
+      right: 0;
+    }
+
+    .btn__pause{
       background:none;
       padding:0;
       cursor: pointer;
       position:absolute;
       left:50px;
-      top:61%;
+      bottom:90px;
       border:none;
       width:50px;
       height:50px;
       border-radius:50%;
       transition:all .2s ease
     }
-    button.pause:after{
+    .btn__pause:after{
       display:inline-block;
       width:6px;
       height:28px;
@@ -314,7 +313,7 @@
       border-style: solid;
       border-color:rgba(255,255,255,.9);
     }
-    button.pause.paused:after{
+    .btn__pause.paused:after{
       width:0;
       height:0;
       border-width: 12px 0 12px 20px;
@@ -331,10 +330,10 @@
         opacity: 0
       }
     }
-    button.pause.paused{
+    .btn__pause.paused{
       background:rgba(255,255,255,.3);
     }
-    button.pause.paused:before{
+    .btn__pause.paused:before{
       display:inline-block;
       content:'';
       animation: backgroundBouce 2s infinite;
@@ -346,10 +345,10 @@
       border: 1px solid rgba(255,255,255,.8);
       border-radius: 50%;
     }
-    button.pause:focus{
+    .btn__pause:focus{
       outline:none
     }
-    button.pause:hover{
+    .btn__pause:hover{
       background:rgba(255,255,255,.3)
     }
   </style>
