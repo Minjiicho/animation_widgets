@@ -42,7 +42,7 @@ var init_duration_time = 5; // 5초
   var duration_time = init_duration_time; // sec
   var count_duration = null;
   var is_playing = true;
-  var $pause_button = $('.pause');
+  var $pause_button = $('.btn__pause');
 
   function resetSwipeOption(curr_idx){
     gotoPage(curr_idx);
