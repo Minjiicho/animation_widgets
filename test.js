@@ -104,6 +104,9 @@ var init_duration_time = 5; // 5초
   }
 
   function updateDurationTime($curr_paging) {
+    if (duration_time === 0) {
+      duration_time = 1;
+    }
     var $all_thumbnail = $('.item .thumbnail');
     var $curr_paging_bar = $curr_paging.find('.bar');
     if (duration_time === 0) {
