@@ -23,8 +23,8 @@ var init_duration_time = 5; // 5초
   $('.pagings').append(paging_el);
 
   /* prev & next & pause */
-  var prev_el = '<span class="btn__prev"><span class="prev-icon"></span></span>'
-  var next_el = '<span class="btn__next"><span class="next-icon"></span></span>'
+  var prev_el = '<span class="btn__prev"><span class="prev-icon"></span></span>';
+  var next_el = '<span class="btn__next"><span class="next-icon"></span></span>';
   var pause_el = '<button class="btn__pause" onclick="onClickPauseButton()"></button>'; 
 
   $('.pages').after(prev_el, pause_el, next_el);
@@ -39,16 +39,15 @@ var init_duration_time = 5; // 5초
 
   /* function */
   var curr_idx = 0; // current_page_index
-  var duration_time = init_duration_time; // sec
+  var duration_time = init_duration_time; // init
   var count_duration = null;
   var is_playing = true;
   var $pause_button = $('.btn__pause');
 
-  function resetSwipeOption(curr_idx){
-    gotoPage(curr_idx);
+  function resetSwipeOption(){
     stopAutoSwipeTimer();
-    $pause_button.removeClass('paused');
     startAutoSwipeTimer(init_duration_time);
+    $pause_button.removeClass('paused');
     is_playing = true;
   }
 
@@ -58,17 +57,18 @@ var init_duration_time = 5; // 5초
     var $curr_paging = $('.paging:eq(' + curr_paging_idx + ')');
 
     if(curr_idx !== curr_paging_idx){
-        curr_idx = curr_paging_idx;
-        resetSwipeOption(curr_idx)
+      curr_idx = curr_paging_idx;
+      gotoPage(curr_idx);
+      resetSwipeOption()
     }else{
       if(!is_playing){
         updateDurationTime($(this));
+        startAutoSwipeTimer(duration_time);
+        countDurationTime();
         $pause_button.removeClass('paused');
         $curr_item.addClass('current');
         $curr_paging.addClass('current');
         is_playing = true;
-        startAutoSwipeTimer(duration_time);
-        countDurationTime();
       }
     }
   });
@@ -79,7 +79,8 @@ var init_duration_time = 5; // 5초
     } else {
       curr_idx --;
     }
-    resetSwipeOption(curr_idx)
+    gotoPage(curr_idx);
+    resetSwipeOption();
   });
   $('.btn__next').on('click', function () {
     if (curr_idx === total_page - 1){
@@ -87,7 +88,8 @@ var init_duration_time = 5; // 5초
     } else {
       curr_idx ++;
     }
-    resetSwipeOption(curr_idx)
+    gotoPage(curr_idx);
+    resetSwipeOption();
   });
   
   function countDown(){
@@ -133,20 +135,20 @@ var init_duration_time = 5; // 5초
     if (is_playing) {  // playing -> pause      
       fixCurrThumbnailScale($curr_item);
       fixCurrPagingBarWidth($curr_paging);
+      stopAutoSwipeTimer();
+      pauseDurationTime();
       $pause_button.addClass('paused');
       $curr_item.removeClass('current');
       $curr_paging.removeClass('current');
       is_playing = false;
-      stopAutoSwipeTimer();
-      pauseDurationTime();
     } else { // pause -> play
       updateDurationTime($curr_paging);
+      startAutoSwipeTimer(duration_time);
+      countDurationTime();
       $pause_button.removeClass('paused');
       $curr_item.addClass('current');
       $curr_paging.addClass('current');
       is_playing = true;
-      startAutoSwipeTimer(duration_time);
-      countDurationTime();
     }
   }
 
@@ -186,8 +188,7 @@ var init_duration_time = 5; // 5초
   function gotoPage(curr_idx){
     duration_time = init_duration_time;
     $('.list').trigger('swipe_page', curr_idx + 1);
-    $('.paging .bar').removeAttr('style');
-    $('.thumbnail').removeAttr('style');
+    $('.paging .bar, .thumbnail').removeAttr('style');
     applyItemClass(curr_idx);
     applyNameClass(curr_idx);
     applyPagingClass(curr_idx);
