@@ -104,11 +104,11 @@ var init_duration_time = 5; // 5초
   }
 
   function updateDurationTime($curr_paging) {
-    if (duration_time === 0) {
-      duration_time = 1;
-    }
     var $all_thumbnail = $('.item .thumbnail');
     var $curr_paging_bar = $curr_paging.find('.bar');
+    if (duration_time === 0) {
+      duration_time = 1; // 1초 이하에서 pause 되었던 경우, resume 할 때 duration_time을 1초로 다시 세팅
+    }
     $all_thumbnail.css({
       'transition-duration': duration_time + 's',
     });
