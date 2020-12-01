@@ -19,6 +19,12 @@
   var pause_el = '<button class="pause" onclick="onClickPauseButton()"></button>'; 
   $('.pages').after(pause_el);
 
+  $('.item-link').each(function(){
+    var item_url = $(this).attr('href');
+    var read_more_btn_el = '<a class="btn__more" href="'+ item_url +'" target="_blank">READ MORE</a>';
+    $(this).after(read_more_btn_el);
+  })
+  
 
   /* function */
   var curr_idx = 0; // current_page_index

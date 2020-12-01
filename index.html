@@ -75,7 +75,8 @@
     }
 
     .widget--h .item {
-      padding: 0 0 20px
+      padding: 0 0 20px;
+      position:relative
     }
 
     .widget--h .thumbnail-wrap:after{
@@ -111,7 +112,7 @@
       -webkit-box-orient:vertical;
       box-sizing: border-box;
     }
-    
+
     .widget--h .name:after,
     .widget--h .name:before {
       display: block;
@@ -161,11 +162,11 @@
     }
 
 
-    a.btn_more {
+    .btn__more {
       display: block;
       position: absolute;
       right: 10px;
-      bottom: 120px;
+      top:54%;
       background: #1e7ebb;
       font-size: 16px;
       text-align: center;
@@ -176,7 +177,7 @@
       transition: .2s
     }
 
-    a.btn_more:hover {
+    .btn__more:hover {
       text-decoration: none;
       border-color: #fff
     }
@@ -185,11 +186,13 @@
       display: none
     }
 
+    .widget--h .pages{
+      margin:0
+    }
     .widget .next,
     .widget .prev {
       position: absolute;
-      top:inherit !important;
-      bottom: 110px;
+      top:64% !important;
       margin:0;
       padding:0;
       background: none;
@@ -295,7 +298,7 @@
       cursor: pointer;
       position:absolute;
       left:50px;
-      bottom:100px;
+      top:61%;
       border:none;
       width:50px;
       height:50px;
@@ -500,7 +503,7 @@
       newsx_detail_page_url_pattern: ""
     };
     initWidgetPage(PARAMS);
-  </script><a class="btn_more" href="https://www.google.com/" target="_blank">READ MORE</a>
+  </script>
 
   <script src="./test.js"></script>
 </body>
