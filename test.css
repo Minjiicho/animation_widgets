@@ -26,10 +26,11 @@
 }
 .widget--h .thumbnail {
   transform: scale(1.1);
-  transition: transform 5s linear;
+  transition: none;
 }
 .widget--h .item.current .thumbnail {
   transform: scale(1) !important;
+  transition: transform 5s linear;
 }
 
 .widget--h .name {
@@ -284,7 +285,4 @@
 }
 .btn__pause:focus {
   outline: none;
-}
-.btn__pause:hover {
-  background: rgba(255, 255, 255, 0.3);
 }
