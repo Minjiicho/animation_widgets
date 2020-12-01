@@ -109,9 +109,6 @@ var init_duration_time = 5; // 5초
     }
     var $all_thumbnail = $('.item .thumbnail');
     var $curr_paging_bar = $curr_paging.find('.bar');
-    if (duration_time === 0) {
-      duration_time = 1;
-    }
     $all_thumbnail.css({
       'transition-duration': duration_time + 's',
     });
@@ -210,6 +207,7 @@ var init_duration_time = 5; // 5초
   startAutoSwipeTimer(duration_time);
   countDurationTime();
 
+  // TODO: transition_duration이 초 단위로 적용되니 정교하지 않음 -> 1초 내외로 남았을 때 pause/resume하면 바로 다음 페이지로 이동해버리는 이슈
   // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
   // TODO: 코드 정리 깔끔하게
 
