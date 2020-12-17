@@ -206,9 +206,10 @@ var init_duration_time = 5; /* A */
     swipe_timer = setTimeout(nextPage, duration_time * 1000);
   }
 
-  gotoPage(curr_idx);
+  setTimeout(function(){
+    gotoPage(curr_idx);
+  }, 10);
   startAutoSwipeTimer(duration_time);
   countDurationTime();
 
-  // TODO: 최초 실행시점에 current가 1페이지에 적용되어 버리는 이슈 (페이징이 이미 차있음)
   // TODO: target width 영역 script로 가변 처리
