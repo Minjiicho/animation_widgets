@@ -16,8 +16,8 @@ var init_duration_time = 5; /* A */
   /* paging */
   var pagings_el = '<div class="pagings"></div>';
   var paging_el = '';
-  var total_page = $('.page-position').length;
-  $('.pages').after(pagings_el);
+  var total_page = $('.item:not(.item-sub)').length;
+  $('.target').after(pagings_el);
   for (var i = 0; i < total_page; i++) {
     paging_el += '<span class="paging" paging-idx= "' + i + '"><i class="bar"></i></span>';
   }
@@ -28,7 +28,7 @@ var init_duration_time = 5; /* A */
   var next_el = '<span class="btn__next"><span class="next-icon"></span></span>';
   var pause_el = '<button class="btn__pause" onclick="onClickPauseButton()"></button>'; 
 
-  $('.pages').after(prev_el, pause_el, next_el);
+  $('.target').after(prev_el, pause_el, next_el);
 
   /* read more button */
   $('.item-link').each(function(){
@@ -39,11 +39,12 @@ var init_duration_time = 5; /* A */
 
 
   /* function */
-  var curr_idx = 0; // current_page_index
-  var duration_time = init_duration_time; // init
-  var count_duration = null;
-  var is_playing = true;
-  var $pause_button = $('.btn__pause');
+  var item_width = 100 / total_page,
+      curr_idx = 0, // current_page_index
+      duration_time = init_duration_time, // init
+      count_duration = null,
+      is_playing = true,
+      $pause_button = $('.btn__pause');
 
   function resetSwipeOption(){
     stopAutoSwipeTimer();
@@ -60,7 +61,7 @@ var init_duration_time = 5; /* A */
     if(curr_idx !== curr_paging_idx){
       curr_idx = curr_paging_idx;
       gotoPage(curr_idx);
-      resetSwipeOption()
+      resetSwipeOption();
     }else{
       if(!is_playing){
         updateDurationTime($(this));
@@ -191,7 +192,8 @@ var init_duration_time = 5; /* A */
 
   function gotoPage(curr_idx){
     duration_time = init_duration_time;
-    $('.list').trigger('swipe_page', curr_idx + 1);
+    target_pos = - item_width * curr_idx;
+    $('.target').css('left', target_pos + '%');
     $('.paging .bar, .thumbnail').removeAttr('style');
     applyItemClass(curr_idx);
     applyNameClass(curr_idx);
@@ -208,12 +210,5 @@ var init_duration_time = 5; /* A */
   startAutoSwipeTimer(duration_time);
   countDurationTime();
 
-  // TODO: transition_duration이 초 단위로 적용되니 정교하지 않음 -> 1초 내외로 남았을 때 pause/resume하면 바로 다음 페이지로 이동해버리는 이슈
-  // TODO: animation -> transition 과정에서 name의 사라지는 효과들 사라짐. (optional)
-  // TODO: 코드 정리 깔끔하게
-
-  //start 할 때도 현재 bar 를 잘 찾아와서 current class를 붙인다.
-  // idx 변수에 든 숫자를 쓴다.
-  // 1. idx 변수를 위로 올린다.
-  // 2. current index 만 공유하냐 아니면 current idx 요소를 공유하냐 -> 일단 idx 만 공유하고 나머지는 추가 작업으로 남겨둠.
-  // 
+  // TODO: 최초 실행시점에 current가 1페이지에 적용되어 버리는 이슈 (페이징이 이미 차있음)
+  // TODO: target width 영역 script로 가변 처리
