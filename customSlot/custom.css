@@ -9,43 +9,43 @@
   transition-duration: 5s; /* A */
 }
 /* paging bar 흘러가는 효과 */
-.widget--h .item.current .thumbnail {
+.widget.widget--v .item.current .thumbnail {
   transition-duration: 5s; /* A */
 }
 
 /* name 영역 */
 /* 텍스트 none + 왼쪽에서 오른쪽으로 밀리며 나타나는 효과 */
-.widget--h .name__text {
+.widget.widget--v .name__text {
   transition-duration: 0.6s;
   transition-delay: 1s; /* B */
 }
 /* 텍스트 배경이 왼쪽에서 오른쪽으로 그려지는 효과 */
-.widget--h .name__bg {
+.widget.widget--v .name__bg {
   transition-duration: 0.6s; /* C1 */
   transition-delay: 0.3s; /* C2 */
 }
 /* 왼쪽의 세로 bar가 나타나는 효과 */
-.widget--h .name:before {
+.widget.widget--v .name:before {
   transition-duration: 0.3s; /* C2 */
 }
 
-.widget--h {
+.widget.widget--v {
   padding: 0;
 }
 
-.widget--h .title {
+.widget.widget--v .title {
   font-size: 24px;
   padding: 0;
   margin-bottom: 24px;
   border: none;
 }
 
-.widget--h .item {
+.widget.widget--v .item {
   padding: 0 0 50px;
   position: relative;
 }
 
-.widget--h .thumbnail-wrap:after {
+.widget.widget--v .thumbnail-wrap:after {
   display: block;
   content: '';
   background: rgba(0, 0, 0, 0.2);
@@ -55,17 +55,17 @@
   top: 0;
   bottom: 0;
 }
-.widget--h .thumbnail {
+.widget.widget--v .thumbnail {
   transform: scale(1.1);
   transition: none;
 }
-.widget--h .item.current .thumbnail {
+.widget.widget--v .item.current .thumbnail {
   transform: scale(1) !important;
   transition-property: transform;
   transition-timing-function: linear;
 }
 
-.widget--h .name {
+.widget.widget--v .name {
   position: absolute;
   width: 92%;
   left: 4%;
@@ -81,8 +81,8 @@
   box-sizing: border-box;
 }
 
-.widget--h .name:after,
-.widget--h .name:before {
+.widget.widget--v .name:after,
+.widget.widget--v .name:before {
   display: block;
   content: '';
   position: absolute;
@@ -90,7 +90,7 @@
   top: 0;
 }
 
-.widget--h .name:before {
+.widget.widget--v .name:before {
   width: 5px;
   height: 0;
   z-index: 1;
@@ -99,27 +99,27 @@
   transition-timing-function: ease-in;
 }
 
-.widget--h .name.current:before {
+.widget.widget--v .name.current:before {
   height: 100%;
 }
 
-.widget--h .name__bg {
+.widget.widget--v .name__bg {
   right: 100%;
   transition-property: right;
   transition-timing-function: ease-in-out 0.3s;
 }
-.widget--h .name.current .name__bg {
+.widget.widget--v .name.current .name__bg {
   display: inline-block;
   background: #ededed;
   position: relative;
   right: 0;
   padding: 5px 20px;
 }
-.widget--h .name:hover .name__bg {
+.widget.widget--v .name:hover .name__bg {
   background: rgb(180, 207, 224);
 }
 
-.widget--h .name__text {
+.widget.widget--v .name__text {
   font-weight: 700;
   opacity: 0;
   position: relative;
@@ -127,7 +127,7 @@
   transition-property: opacity left;
   transition-timing-function: ease-in-out;
 }
-.widget--h .name.current .name__text {
+.widget.widget--v .name.current .name__text {
   left: 0;
   opacity: 1;
 }
@@ -206,7 +206,7 @@
   color: #fff;
 }
 
-.widget--h .pages {
+.widget.widget--v .pages {
   display: none;
 }
 
