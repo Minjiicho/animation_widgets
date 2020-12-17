@@ -1,17 +1,18 @@
 
-/* 슬라이드 효과의 재생 시간을 설정해주세요 */
+/* 슬라이드 효과의 재생 시간 */
 /* 단위는 'second' 입니다 */
-var init_duration_time = 5; // 5초
+/* 시간 설정 */
+var init_duration_time = 5; /* A */
 
 /* view */
-  
+
   /* name */
   var names = document.getElementsByClassName('name');
   for (var i = 0; i < names.length; i++) {
     var text = names[i].innerText;
     names[i].innerHTML = '<div class="name__bg"><span class="name__text">' + text + '</span></div>';
   }
-  
+
   /* paging */
   var pagings_el = '<div class="pagings"></div>';
   var paging_el = '';
@@ -35,7 +36,7 @@ var init_duration_time = 5; // 5초
     var read_more_btn_el = '<a class="btn__more" href="'+ item_url +'" target="_blank">READ MORE</a>';
     $(this).after(read_more_btn_el);
   })
-  
+
 
   /* function */
   var curr_idx = 0; // current_page_index
@@ -72,7 +73,7 @@ var init_duration_time = 5; // 5초
       }
     }
   });
-  
+
   $('.btn__prev').on('click', function () {
     if (curr_idx === 0){
       curr_idx = total_page - 1;
@@ -91,7 +92,7 @@ var init_duration_time = 5; // 5초
     gotoPage(curr_idx);
     resetSwipeOption();
   });
-  
+
   function countDown(){
     duration_time --;
     count_duration = setTimeout(countDown, 1000);
@@ -104,11 +105,11 @@ var init_duration_time = 5; // 5초
   }
 
   function updateDurationTime($curr_paging) {
+    if (duration_time === 0) {
+      duration_time = 1;
+    }
     var $all_thumbnail = $('.item .thumbnail');
     var $curr_paging_bar = $curr_paging.find('.bar');
-    if (duration_time === 0) {
-      duration_time = 1; // 1초 이하에서 pause 되었던 경우, resume 할 때 duration_time을 1초로 다시 세팅
-    }
     $all_thumbnail.css({
       'transition-duration': duration_time + 's',
     });
@@ -187,7 +188,7 @@ var init_duration_time = 5; // 5초
   function stopAutoSwipeTimer() {
     clearTimeout(swipe_timer);
   }
-  
+
   function gotoPage(curr_idx){
     duration_time = init_duration_time;
     $('.list').trigger('swipe_page', curr_idx + 1);
