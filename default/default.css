@@ -1,3 +1,34 @@
+/* 애니메이션 요소별 시간 설정 */
+/* 알파벳이 같은 경우, 숫자값은 동일하고 */
+/* 알파벳순, 숫자순으로 시간차를 두어야 합니다 */
+/* A > B > C */
+/* 단위는 'second' 입니다 */
+
+/* thumbnail zoom out 효과 */
+.paging.current .bar {
+  transition-duration: 5s; /* A */
+}
+/* paging bar 흘러가는 효과 */
+.widget--h .item.current .thumbnail {
+  transition-duration: 5s; /* A */
+}
+
+/* name 영역 */
+/* 텍스트 none + 왼쪽에서 오른쪽으로 밀리며 나타나는 효과 */
+.widget--h .name__text {
+  transition-duration: 0.6s;
+  transition-delay: 1s; /* B */
+}
+/* 텍스트 배경이 왼쪽에서 오른쪽으로 그려지는 효과 */
+.widget--h .name__bg {
+  transition-duration: 0.6s; /* C1 */
+  transition-delay: 0.3s; /* C2 */
+}
+/* 왼쪽의 세로 bar가 나타나는 효과 */
+.widget--h .name:before {
+  transition-duration: 0.3s; /* C2 */
+}
+
 .widget--h {
   padding: 0;
 }
@@ -16,7 +47,7 @@
 
 .widget--h .thumbnail-wrap:after {
   display: block;
-  content: "";
+  content: '';
   background: rgba(0, 0, 0, 0.2);
   position: absolute;
   left: 0;
@@ -30,7 +61,8 @@
 }
 .widget--h .item.current .thumbnail {
   transform: scale(1) !important;
-  transition: transform 5s linear;
+  transition-property: transform;
+  transition-timing-function: linear;
 }
 
 .widget--h .name {
@@ -52,7 +84,7 @@
 .widget--h .name:after,
 .widget--h .name:before {
   display: block;
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -63,7 +95,8 @@
   height: 0;
   z-index: 1;
   background: #1e7ebb;
-  transition: height 0.3s ease-in;
+  transition-property: height;
+  transition-timing-function: ease-in;
 }
 
 .widget--h .name.current:before {
@@ -72,7 +105,8 @@
 
 .widget--h .name__bg {
   right: 100%;
-  transition: right 0.6s ease-in-out 0.3s;
+  transition-property: right;
+  transition-timing-function: ease-in-out 0.3s;
 }
 .widget--h .name.current .name__bg {
   display: inline-block;
@@ -90,7 +124,8 @@
   opacity: 0;
   position: relative;
   left: -8px;
-  transition: opacity 0.6s ease-in-out 1s, left 0.6s ease-in-out 1s;
+  transition-property: opacity left;
+  transition-timing-function: ease-in-out;
 }
 .widget--h .name.current .name__text {
   left: 0;
@@ -132,7 +167,7 @@
 
 .paging .bar {
   display: block;
-  content: "";
+  content: '';
   width: 0;
   position: absolute;
   left: 0;
@@ -144,7 +179,8 @@
 
 .paging.current .bar {
   width: 100% !important;
-  transition: width 5s linear;
+  transition-property: width;
+  transition-timing-function: linear;
 }
 
 .btn__more {
@@ -215,7 +251,7 @@
 .prev-icon:before,
 .next-icon:before {
   display: inline-block;
-  content: "";
+  content: '';
   width: 5px;
   height: 24px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -246,7 +282,7 @@
   display: inline-block;
   width: 6px;
   height: 28px;
-  content: "";
+  content: '';
   border-width: 0px 8px 0px 8px;
   border-style: solid;
   border-color: rgba(255, 255, 255, 0.9);
@@ -273,7 +309,7 @@
 }
 .btn__pause.paused:before {
   display: inline-block;
-  content: "";
+  content: '';
   animation: backgroundBouce 2s infinite;
   position: absolute;
   left: 0;
