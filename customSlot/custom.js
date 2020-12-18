@@ -5,6 +5,11 @@
 var init_duration_time = 5; /* A */
 
 /* view */
+var total_page = $('.item:not(.item-sub)').length,
+    total_width = 100 * total_page;
+
+  /* width */
+  $('.target-wrap').css('width', total_width + '%');
 
   /* name */
   var names = document.getElementsByClassName('name');
@@ -16,11 +21,11 @@ var init_duration_time = 5; /* A */
   /* paging */
   var pagings_el = '<div class="pagings"></div>';
   var paging_el = '';
-  var total_page = $('.item:not(.item-sub)').length;
-  $('.target').after(pagings_el);
+
   for (var i = 0; i < total_page; i++) {
     paging_el += '<span class="paging" paging-idx= "' + i + '"><i class="bar"></i></span>';
   }
+  $('.target').after(pagings_el);
   $('.pagings').append(paging_el);
 
   /* prev & next & pause */
@@ -211,5 +216,3 @@ var init_duration_time = 5; /* A */
   }, 10);
   startAutoSwipeTimer(duration_time);
   countDurationTime();
-
-  // TODO: target width 영역 script로 가변 처리
