@@ -195,7 +195,9 @@ var total_page = $('.item:not(.item-sub)').length,
     clearTimeout(swipe_timer);
   }
 
+  var curr_adSlot_idx = 0;
   function gotoPage(curr_idx){
+    var $curr_item = $('.item:eq(' + curr_idx + ')');
     duration_time = init_duration_time;
     target_pos = - item_width * curr_idx;
     $('.target').css('left', target_pos + '%');
@@ -203,6 +205,19 @@ var total_page = $('.item:not(.item-sub)').length,
     applyItemClass(curr_idx);
     applyNameClass(curr_idx);
     applyPagingClass(curr_idx);
+    if ($curr_item.hasClass('item-sp') && curr_adSlot_idx < total_adSlot){ // 현재 활성화된 아이템이 광고슬롯이고, 전체 광고슬롯 안에 포함된 경우,
+      var arrCurrAdExposeLink = arrAdExposeLinks[curr_adSlot_idx],
+          currAdExposeLink = arrCurrAdExposeLink.toString();      
+      window.PARAMS.ad_exposelog_links.push(arrCurrAdExposeLink) // 비웠던 params에 현재 활성화된 expose 링크와 매칭되는 배열을 추가
+      
+      $.ajax({
+        method: 'GET',
+        url: currAdExposeLink
+      });
+      curr_adSlot_idx ++;
+
+      console.log('채우기', window.PARAMS.ad_exposelog_links)
+    }
   }
 
   function nextPage() {
@@ -211,8 +226,19 @@ var total_page = $('.item:not(.item-sub)').length,
     swipe_timer = setTimeout(nextPage, duration_time * 1000);
   }
 
-  setTimeout(function(){
-    gotoPage(curr_idx);
-  }, 10);
-  startAutoSwipeTimer(duration_time);
-  countDurationTime();
+  /* customize ad exposelog */
+  var total_adSlot = $('.item-sp').length; // 전체 광고슬롯의 갯수
+  var arrAdExposeLinks = window.PARAMS.ad_exposelog_links; // 배열을 저장해둔다
+  window.PARAMS.ad_exposelog_links = []; // 기존 배열을 비운다
+  console.log('비우기', window.PARAMS.ad_exposelog_links)
+
+  $(window).on('expose', function() {
+    setTimeout(function(){
+      gotoPage(curr_idx);
+    }, 10);
+    startAutoSwipeTimer(duration_time);
+    countDurationTime();
+  });
+
+  // 배열을 비워도 로그는 expose 타임에 전송됨
+  // log failed ??? data ???
