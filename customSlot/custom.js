@@ -195,6 +195,36 @@ var total_page = $('.item:not(.item-sub)').length,
     clearTimeout(swipe_timer);
   }
 
+
+  /* reco-api util 코드 */
+  var simpleStringHash = function(str) {
+    var hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    return Math.abs(hash);
+  };
+  var logByHiddenImg = function(url) {
+    if (url === '#?') return;
+    if (url.indexOf('is_gif=1') === -1) {
+      url += (url.indexOf('?') > -1 && '&' || '?') + 'is_gif=1';
+    }
+    var hash = simpleStringHash(url);
+    var id = "beacon-" + hash;
+    if ($("#" + id).length === 0) {
+      $('body').append(
+        '<img id="' + id + '" width="1" height="1" src="' + url + '" style="display:none">'
+      );
+    }
+    // bfcache와 같은 iframe cache reload시 발생할 수 있는 중복로그 방어
+    $("#" + id).on('load', function() {
+      $("#" + id).remove();
+    });
+  };
+
   var curr_adSlot_idx = 0;
   function gotoPage(curr_idx){
     var $curr_item = $('.item:eq(' + curr_idx + ')');
@@ -207,16 +237,9 @@ var total_page = $('.item:not(.item-sub)').length,
     applyPagingClass(curr_idx);
     if ($curr_item.hasClass('item-sp') && curr_adSlot_idx < total_adSlot){ // 현재 활성화된 아이템이 광고슬롯이고, 전체 광고슬롯 안에 포함된 경우,
       var arrCurrAdExposeLink = arrAdExposeLinks[curr_adSlot_idx],
-          currAdExposeLink = arrCurrAdExposeLink.toString();      
-      window.PARAMS.ad_exposelog_links.push(arrCurrAdExposeLink) // 비웠던 params에 현재 활성화된 expose 링크와 매칭되는 배열을 추가
-      
-      $.ajax({
-        method: 'GET',
-        url: currAdExposeLink
-      });
+          strCurrAdExposeLink = arrCurrAdExposeLink.toString();
+      logByHiddenImg(strCurrAdExposeLink);
       curr_adSlot_idx ++;
-
-      console.log('채우기', window.PARAMS.ad_exposelog_links)
     }
   }
 
@@ -228,9 +251,8 @@ var total_page = $('.item:not(.item-sub)').length,
 
   /* customize ad exposelog */
   var total_adSlot = $('.item-sp').length; // 전체 광고슬롯의 갯수
-  var arrAdExposeLinks = window.PARAMS.ad_exposelog_links; // 배열을 저장해둔다
-  window.PARAMS.ad_exposelog_links = []; // 기존 배열을 비운다
-  console.log('비우기', window.PARAMS.ad_exposelog_links)
+  var arrAdExposeLinks = window.PARAMS.ad_exposelog_links.slice(); // 기존 배열을 복제/저장해둔다
+  window.PARAMS.ad_exposelog_links.length = 0; // 기존 배열을 비운다
 
   $(window).on('expose', function() {
     setTimeout(function(){
@@ -239,6 +261,3 @@ var total_page = $('.item:not(.item-sub)').length,
     startAutoSwipeTimer(duration_time);
     countDurationTime();
   });
-
-  // 배열을 비워도 로그는 expose 타임에 전송됨
-  // log failed ??? data ???
